@@ -1,5 +1,6 @@
 function CardDeck() {
   this.deck = [];
+  this.makeDeck();
 }
 
 CardDeck.prototype.makeDeck = function () {
@@ -58,7 +59,10 @@ CardDeck.prototype.fisherYatesShuffle = function (deck) {
 };
 
 // generic shuffle method, calls a particular shuffle strategy by function reference
-CardDeck.prototype.shuffleDeck = function (shuffleMethod) {
+// defaults to the Fisher-Yates shuffle if none is entered
+CardDeck.prototype.shuffleDeck = function (
+  shuffleMethod = this.fisherYatesShuffle
+) {
   this.deck = shuffleMethod(this.deck);
 };
 
@@ -68,16 +72,26 @@ CardDeck.prototype.dealCard = function () {
 
 CardDeck.prototype.reset = function () {
   this.makeDeck();
+  this.shuffleDeck();
 };
 
 CardDeck.prototype.showDeck = function () {
   console.log(this.deck, "\n");
 };
 
+// generate a card deck
 const myDeck = new CardDeck();
-myDeck.makeDeck();
+// display deck made
 myDeck.showDeck();
+// shuffle the deck using one of the shuffle methods
 myDeck.shuffleDeck(myDeck.swapShuffle);
+// show deck after shuffle
 myDeck.showDeck();
+// deal a card and log it
+console.log(myDeck.dealCard());
+// show deck is down to 51 cards now
+myDeck.showDeck();
+// reset the deck, this should probably shuffled the newly generated deck as well
 myDeck.reset();
+// show the new deck
 myDeck.showDeck();
