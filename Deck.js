@@ -29,17 +29,24 @@ CardDeck.prototype.makeDeck = function () {
   });
 };
 
-// CardDeck.prototype.withinDeckShuffle = function (deck) {
-//   const newRandomDeck = [...deck];
-//   const DECK_SIZE = newRandomDeck.length;
-//   let randomIndexInDeck = null;
-//   for (let i = 0; i < DECK_SIZE; i++) {
-//     randomIndexInDeck = Math.floor(Math.random() * DECK_SIZE - 1);
-//     newRandomDeck.unshift(newRandomDeck.splice(randomIndexInDeck, 1));
-//   }
-//   return newRandomDeck;
-// };
+// randomizes deck through card swapping
+CardDeck.prototype.swapShuffle = function (deck) {
+  // make deep copy of deck
+  const newRandomDeck = [...deck];
+  const INDEX_LIMIT = newRandomDeck.length - 1;
+  let randomIndexInDeck = null;
+  for (let i = 0; i <= INDEX_LIMIT; i++) {
+    randomIndexInDeck = Math.floor(Math.random() * INDEX_LIMIT);
+    // swap cards in deck
+    [newRandomDeck[0], newRandomDeck[randomIndexInDeck]] = [
+      newRandomDeck[randomIndexInDeck],
+      newRandomDeck[0],
+    ];
+  }
+  return newRandomDeck;
+};
 
+// creates a whole new random deck by removing from original deck and adding to a new deck
 CardDeck.prototype.fisherYatesShuffle = function (deck) {
   const newRandomDeck = [];
   let randomIndexInDeck = null;
@@ -50,13 +57,22 @@ CardDeck.prototype.fisherYatesShuffle = function (deck) {
   return newRandomDeck;
 };
 
-// generic shuffle method, calls a particular shuffle strategy
-CardDeck.prototype.shuffleDeck = function (deck, shuffleMethod) {
-  this.deck = shuffleMethod(deck);
+// generic shuffle method, calls a particular shuffle strategy as first class function
+CardDeck.prototype.shuffleDeck = function (shuffleMethod) {
+  this.deck = shuffleMethod(this.deck);
+};
+
+CardDeck.prototype.dealCard = function () {
+  return this.deck.pop();
+};
+
+CardDeck.prototype.reset = function () {
+  this.makeDeck();
 };
 
 const myDeck = new CardDeck();
 myDeck.makeDeck();
 console.log(myDeck.deck);
-myDeck.shuffleDeck(myDeck.deck, myDeck.withinDeckShuffle);
+myDeck.shuffleDeck(myDeck.swapShuffle);
 console.log(myDeck.deck);
+myDeck.reset();
