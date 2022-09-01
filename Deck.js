@@ -57,7 +57,7 @@ CardDeck.prototype.fisherYatesShuffle = function (deck) {
   return newRandomDeck;
 };
 
-// generic shuffle method, calls a particular shuffle strategy as first class function
+// generic shuffle method, calls a particular shuffle strategy by function reference
 CardDeck.prototype.shuffleDeck = function (shuffleMethod) {
   this.deck = shuffleMethod(this.deck);
 };
@@ -70,9 +70,14 @@ CardDeck.prototype.reset = function () {
   this.makeDeck();
 };
 
+CardDeck.prototype.showDeck = function () {
+  console.log(this.deck, "\n");
+};
+
 const myDeck = new CardDeck();
 myDeck.makeDeck();
-console.log(myDeck.deck);
+myDeck.showDeck();
 myDeck.shuffleDeck(myDeck.swapShuffle);
-console.log(myDeck.deck);
+myDeck.showDeck();
 myDeck.reset();
+myDeck.showDeck();
