@@ -67,31 +67,47 @@ CardDeck.prototype.shuffleDeck = function (
 };
 
 CardDeck.prototype.dealCard = function () {
-  return this.deck.pop();
+  if (this.deck.length !== 0) {
+    console.log(`The ${this.deck.pop()} was dealt`);
+  } else {
+    console.log("There are no more cards in this card deck.");
+  }
 };
 
-CardDeck.prototype.reset = function () {
+CardDeck.prototype.resetDeck = function () {
   this.makeDeck();
   this.shuffleDeck();
 };
 
-CardDeck.prototype.showDeck = function () {
+CardDeck.prototype.displayDeck = function () {
   console.log(this.deck, "\n");
+};
+
+CardDeck.prototype.displayCardsLeft = function () {
+  const cardsLeft = this.deck.length;
+  console.log(
+    `There ${cardsLeft === 1 ? "is" : "are"} ${this.deck.length} ${
+      cardsLeft === 1 ? "card" : "cards"
+    } left.\n`
+  );
 };
 
 // generate a card deck
 const myDeck = new CardDeck();
 // display deck made
-myDeck.showDeck();
+myDeck.displayDeck();
 // shuffle the deck using one of the shuffle methods
 myDeck.shuffleDeck(myDeck.swapShuffle);
 // show deck after shuffle
-myDeck.showDeck();
+myDeck.displayDeck();
 // deal a card and log it
 console.log(myDeck.dealCard());
 // show deck is down to 51 cards now
-myDeck.showDeck();
-// reset the deck, this should probably shuffled the newly generated deck as well
-myDeck.reset();
+myDeck.displayCardsLeft();
 // show the new deck
-myDeck.showDeck();
+myDeck.displayDeck();
+
+for (let i = 0; i < 55; i++) {
+  myDeck.dealCard();
+}
+myDeck.displayCardsLeft();
